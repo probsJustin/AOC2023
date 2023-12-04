@@ -1,0 +1,55 @@
+const fs = require('fs');
+
+let data, lines;
+
+try {
+     data = fs.readFileSync('puzzle_part1.txt', 'utf8');
+     lines = data.split(/\r\n|\n/);
+} catch (err) {
+    console.error('Error reading the file:', err);
+}
+
+let newLines = [...lines];
+
+let numbersAsStrings = {"one": "o1e", "two": "t2o", "three": "t3e", "four": "f4r", "five" : "f5e", "six" :"s6x", "seven" : "s7n", "eight":"e8t", "nine": "n9e"};
+
+for(i = 0; i < newLines.length; i++){
+    Object.entries(numbersAsStrings).forEach(([key, value]) => {
+        newLines[i] = newLines[i].replaceAll(key, value);
+    });
+}
+
+function isNumber(char) {
+    return /^[0-9]$/.test(char);
+}
+
+function getFrontNumber(inputString) {
+    for(i = 0;i < inputString.length; i++){
+        if(isNumber(+inputString[i])){
+            return inputString[i];
+        }
+    }
+}
+
+function getLastNumber(inputString) {
+    for(i = inputString.length; i >= 0; i--){
+        if(isNumber(+inputString[i])){
+            return inputString[i];
+        }
+    }
+}
+
+let totalNumber = 0;
+
+for(z = 0; z < lines.length; z++){
+    let currentNumber = `${getFrontNumber(newLines[z])}${getLastNumber(newLines[z])}`
+    totalNumber = totalNumber + parseInt(currentNumber);
+}
+
+console.log(`Total Number: ${totalNumber}`);
+
+
+
+
+
+
